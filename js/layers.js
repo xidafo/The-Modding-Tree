@@ -39,10 +39,7 @@ addLayer("w", {
             }
             12: {
                 tital: 'work out'
-                description: 'arms are stronger (boost blocks by 2.25)'
-                cost: new decimal(2)
-                unlocked() => true,
-
+                description: ''
             }
         }
 })
