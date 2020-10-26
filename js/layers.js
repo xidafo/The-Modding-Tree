@@ -15,6 +15,7 @@ addLayer("w", {
         exponent: 0.5, // Prestige currency exponent
         gainMult() { // Calculate the multiplier for main currency from bonuses
             mult = new Decimal(1)
+            if (player.p.upgrades.includes(11)) mult = mult.times(2)
             return mult
         },
         gainExp() { // Calculate the exponent on main currency from bonuses
@@ -25,4 +26,17 @@ addLayer("w", {
             {key: "w", description: "Reset for wood", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
         ],
         layerShown(){return true},
+        
+        upgrades: {
+            rows: 2
+            cols: 4
+            11: {
+                tital: 'stronger fists'
+                description: "boost blocks gain by 1.75",
+                cost: new decimal(1),
+                unlocked() => true,
+                
+            }
+            
+        }
 })
