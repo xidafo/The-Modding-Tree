@@ -200,7 +200,7 @@ addLayer("go", {
         return new Decimal(1)
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
-    branches: ["io"],
+    branches: ["io", 'i'],
     hotkeys: [
         {key: "g", description: "Reset for gold", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
@@ -260,7 +260,7 @@ addLayer("d", {
         return new Decimal(1)
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
-    branches: ["g"],
+    branches: ["go", 'g'],
     hotkeys: [
         {key: "d", description: "Reset for Diamond", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
@@ -277,7 +277,7 @@ addLayer("o", {
     }},
     color: "#595959",
     requires: new Decimal(1e9), // Can be a function that takes requirement increases into account
-    resource: "Diamond", // Name of prestige currency
+    resource: "Obsidian", // Name of prestige currency
     baseResource: "Blocks", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
