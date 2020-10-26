@@ -28,8 +28,8 @@ addLayer("w", {
         layerShown(){return true},
         
         upgrades: {
-            rows: 2
-            cols: 4
+            rows: 2,
+            cols: 4,
             11: {
                 tital: 'stronger fists'
                 description: "boost blocks gain by 1.75",
