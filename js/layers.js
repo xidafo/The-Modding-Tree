@@ -26,8 +26,4 @@ addLayer("w", {
             {key: "w", description: "Reset for wood", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
         ],
         layerShown(){return true},
-        
-
-        
-        
 })
