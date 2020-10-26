@@ -27,7 +27,22 @@ addLayer("w", {
         ],
         layerShown(){return true},
         
+        upgrades: {
+            rows: 2,
+            cols: 4,
+            11: {
+                tital: 'stronger fists'
+                description: "boost blocks gain by 1.75",
+                cost: new decimal(1),
+                unlocked() => true,
+                
+            }
+            12: {
+                tital: 'work out'
+                description: 'arms are stronger (boost blocks by 2.25)'
+                cost: new decimal(2)
+                unlocked() => true,
 
-        
-        
+            }
+        }
 })
