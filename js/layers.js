@@ -388,7 +388,7 @@ addLayer("l", {
 })
 
 // crafting recepies
-addLayer("a", {
+addLayer("cr", {
     startData() { return {
         unlocked: true,
         points: new Decimal(0),
@@ -399,7 +399,33 @@ addLayer("a", {
     tooltip() { // Optional, tooltip displays when the layer is locked
         return ("Crafting recipies")
     },
-})
+    achievements: {
+        rows: 1,
+        cols: 3,
+        11: {
+            name: "planks",
+            done() {return [player.w.points.gte(4)]},
+            goalTooltip: "complete wood chalenge 4 times", // Shows when achievement is not completed
+            doneTooltip: '4 wood chalenge completions', // Showed when the achievement is completed
+        },
+        12: {
+            name: "sticks",
+            done() {return [player.p.points.gte(2)]},
+            goalTooltip: "complete planks chalenge 4 times", // Shows when achievement is not completed
+            doneTooltip: '2 planks chalenge completions', // Showed when the achievement is completed
+        },
+        13: {
+            name: "wooden pickaxe",
+            done() {return [player.w.points.gte(7)]},
+            goalTooltip: "complete wood chalenge 7 times and stick chalenge 3 times", // Shows when achievement is not completed
+            doneTooltip: 'stone?', // Showed when the achievement is completed
+        },
+    },
+    midsection: [
+        "achievements",
+    ]
+},
+)
 
 // ghost layers ignore
 addLayer("aaa", {
