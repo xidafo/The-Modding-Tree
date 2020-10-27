@@ -80,7 +80,7 @@ addLayer("s", {
         return new Decimal(1)
     },
     row: 2, // Row the layer is in on the tree (0 is the first row)
-    branches: ["w", 'p'],
+    branches: ['p'],
     hotkeys: [
         {key: "s", description: "Reset for sticks", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
@@ -125,7 +125,7 @@ addLayer("io", {
         unlocked: true,
         points: new Decimal(0),
     }},
-    color: "#bf834e",
+    color: '#CBCDCD',
     requires: new Decimal(1e5), // Can be a function that takes requirement increases into account
     resource: "iron ore", // Name of prestige currency
     baseResource: "Blocks", // Name of resource prestige is based on
@@ -155,7 +155,7 @@ addLayer("i", {
         unlocked: true,
         points: new Decimal(0),
     }},
-    color: "#bf834e",
+    color: "#E6E7E8",
     requires: new Decimal(1e5), // Can be a function that takes requirement increases into account
     resource: "iron ingot", // Name of prestige currency
     baseResource: "Blocks", // Name of resource prestige is based on
@@ -185,7 +185,7 @@ addLayer("go", {
         unlocked: true,
         points: new Decimal(0),
     }},
-    color: "#595959",
+    color: "#cf7500",
     requires: new Decimal(1e9), // Can be a function that takes requirement increases into account
     resource: "gold ore", // Name of prestige currency
     baseResource: "Blocks", // Name of resource prestige is based on
@@ -215,7 +215,7 @@ addLayer("g", {
         unlocked: true,
         points: new Decimal(0),
     }},
-    color: "#595959",
+    color: "#f0a500",
     requires: new Decimal(1e9), // Can be a function that takes requirement increases into account
     resource: "gold ingot", // Name of prestige currency
     baseResource: "Blocks", // Name of resource prestige is based on
@@ -245,7 +245,7 @@ addLayer("d", {
         unlocked: true,
         points: new Decimal(0),
     }},
-    color: "#595959",
+    color: "#40a8c4",
     requires: new Decimal(1e9), // Can be a function that takes requirement increases into account
     resource: "Diamond", // Name of prestige currency
     baseResource: "Blocks", // Name of resource prestige is based on
@@ -275,7 +275,7 @@ addLayer("o", {
         unlocked: true,
         points: new Decimal(0),
     }},
-    color: "#595959",
+    color: "#221f3b",
     requires: new Decimal(1e9), // Can be a function that takes requirement increases into account
     resource: "Obsidian", // Name of prestige currency
     baseResource: "Blocks", // Name of resource prestige is based on
@@ -305,7 +305,7 @@ addLayer("n", {
         unlocked: true,
         points: new Decimal(0),
     }},
-    color: "#595959",
+    color: "#003366",
     requires: new Decimal(1e9), // Can be a function that takes requirement increases into account
     resource: "Netherite", // Name of prestige currency
     baseResource: "Blocks", // Name of resource prestige is based on
@@ -327,6 +327,66 @@ addLayer("n", {
     layerShown(){return true},
 })
 
+addLayer("r", {
+    name: "Redstone", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "R", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 6, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: true,
+        points: new Decimal(0),
+    }},
+    color: "#e60000",
+    requires: new Decimal(1e9), // Can be a function that takes requirement increases into account
+    resource: "Redstone", // Name of prestige currency
+    baseResource: "Blocks", // Name of resource prestige is based on
+    baseAmount() {return player.points}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 0.5, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 2, // Row the layer is in on the tree (0 is the first row)
+    branches: ['i','g'],
+    hotkeys: [
+        {key: "r", description: "Reset for Redstone", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+    layerShown(){return true},
+})
+
+addLayer("l", {
+    name: "Lapis", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "L", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 4, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: true,
+        points: new Decimal(0),
+    }},
+    color: "#6600CC",
+    requires: new Decimal(1e9), // Can be a function that takes requirement increases into account
+    resource: "Lapis", // Name of prestige currency
+    baseResource: "Blocks", // Name of resource prestige is based on
+    baseAmount() {return player.points}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 0.5, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 2, // Row the layer is in on the tree (0 is the first row)
+    branches: ['i','g'],
+    hotkeys: [
+        {key: "l", description: "Reset for Lapis", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+    layerShown(){return true},
+})
+
 // crafting recepies
 addLayer("a", {
     startData() { return {
@@ -340,30 +400,9 @@ addLayer("a", {
         return ("Crafting recipies")
     },
 })
+
 // ghost layers ignore
 addLayer("aaa", {
-    position: 1,
-    startData() { return {
-        unlocked: true,
-        points: new Decimal(0),
-    }},
-    type: "none",
-    row: 3,
-    layerShown: "ghost",
-}, 
-)
-addLayer('aaaa', {
-    position: 1,
-    startData() { return {
-        unlocked: true,
-        points: new Decimal(0),
-    }},
-    type: "none",
-    row: 4,
-    layerShown: "ghost",
-}, 
-)
-addLayer('aaaa', {
     position: 2,
     startData() { return {
         unlocked: true,
@@ -376,6 +415,39 @@ addLayer('aaaa', {
 )
 addLayer('aaaa', {
     position: 2,
+    startData() { return {
+        unlocked: true,
+        points: new Decimal(0),
+    }},
+    type: "none",
+    row: 2,
+    layerShown: "ghost",
+}, 
+)
+addLayer('aaaaa', {
+    position: 9,
+    startData() { return {
+        unlocked: true,
+        points: new Decimal(0),
+    }},
+    type: "none",
+    row: 2,
+    layerShown: "ghost",
+}, 
+)
+addLayer('aaaaaa', {
+    position: 9,
+    startData() { return {
+        unlocked: true,
+        points: new Decimal(0),
+    }},
+    type: "none",
+    row: 1,
+    layerShown: "ghost",
+}, 
+)
+addLayer('aaaaaaa', {
+    position: 10,
     startData() { return {
         unlocked: true,
         points: new Decimal(0),
