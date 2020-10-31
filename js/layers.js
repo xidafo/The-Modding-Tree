@@ -134,7 +134,7 @@ addLayer("p", {
     symbol: "P", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
-        unlocked: true,
+        unlocked() {return hasChallenge('w', 11)},
         points: new Decimal(0),
     }},
     color: "#a67041",
@@ -156,7 +156,7 @@ addLayer("p", {
     hotkeys: [
         {key: "P", description: "Reset for planks", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return true},
+    layerShown(){return hasChallenge('w', 11)},
 })
 
 addLayer("s", {
