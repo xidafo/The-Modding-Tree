@@ -1,3 +1,4 @@
+
 addLayer("w", {
     name: "Wood", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "🌳", // This appears on the layer's node. Default is the id with the first letter capitalized
@@ -14,7 +15,9 @@ addLayer("w", {
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.5, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
-        mult = new Decimal(1)
+        let mult = new Decimal(1)
+        if (hasUpgrade(this.layer, 11)) mult = mult.times(2)
+        if (hasUpgrade(this.layer, 14)) mult = mult.times(upgradeEffect(this.layer, 14))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -25,6 +28,49 @@ addLayer("w", {
         {key: "w", description: "Reset for wood", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     layerShown(){return true},
+    upgrades : {
+        rows : 1,
+        cols : 4,
+        11 : {
+            title: 'punches are twice as strong',
+            description: "get twice as much wood per munch",
+            cost: new Decimal(1),
+            unlocked() {return true},
+        },
+        12: {
+            title: 'wood somehow makes blocks?',
+            description: "Multiply block gain baised on wood",
+            cost: new Decimal(1),
+            unlocked() { return player[this.layer].unlocked }, // The upgrade is only visible when this is true
+            effect() { // Calculate bonuses from the upgrade. Can return a single value or an object with multiple values
+                let ret = player[this.layer].points.add(1).pow(0.15).mul(1.25)
+                return ret;
+            },
+            effectDisplay() { return format(this.effect())+"x" }, // Add formatting to the effect
+        },
+        13: {
+            title: 'blocks make more blocks?',
+            description: 'multiply block gain by blocks',
+            cost: new Decimal(4),
+            unlocked() {return player.w.points.gte(3)},
+            effect() {
+                if(player.points.lessThan(1)) return 1
+                let ret = player.points.log(9).times(1.67).pow(0.8)
+                return ret;
+            },
+        },
+        14:{
+            title: 'blocks make you punch harder?',
+            description: 'multiply wood gain by blocks',
+            cost: new Decimal(8),
+            unlocked() {return hasUpgrade(this.layer, 13)},
+            effect() {
+                if(player.points.lessThan(1)) return 1
+                let ret = player.points.log(5).pow(0.2).times(1.4)
+                return ret
+            },
+        },
+    },
 })
 
 addLayer("p", {
@@ -36,10 +82,10 @@ addLayer("p", {
         points: new Decimal(0),
     }},
     color: "#a67041",
-    requires: new Decimal(1e3), // Can be a function that takes requirement increases into account
+    requires: new Decimal(200), // Can be a function that takes requirement increases into account
     resource: "Planks", // Name of prestige currency
-    baseResource: "Blocks", // Name of resource prestige is based on
-    baseAmount() {return player.points}, // Get the current amount of baseResource
+    baseResource: "Wood", // Name of resource prestige is based on
+    baseAmount() {return player.w.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.5, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
