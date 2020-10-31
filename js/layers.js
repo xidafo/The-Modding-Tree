@@ -18,6 +18,7 @@ addLayer("w", {
         let mult = new Decimal(1)
         if (hasUpgrade(this.layer, 11)) mult = mult.times(2)
         if (hasUpgrade(this.layer, 14)) mult = mult.times(upgradeEffect(this.layer, 14))
+        if (hasUpgrade(this.layer, 21)) mult = mult.times(upgradeEffect(this.layer, 21))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -29,7 +30,7 @@ addLayer("w", {
     ],
     layerShown(){return true},
     upgrades : {
-        rows : 1,
+        rows : 2,
         cols : 4,
         11 : {
             title: 'punches are twice as strong',
@@ -44,6 +45,7 @@ addLayer("w", {
             unlocked() { return player[this.layer].unlocked }, // The upgrade is only visible when this is true
             effect() { // Calculate bonuses from the upgrade. Can return a single value or an object with multiple values
                 let ret = player[this.layer].points.add(1).pow(0.15).mul(1.25)
+                if(player[this.layer].points.lt(1)) ret = 1
                 return ret;
             },
             effectDisplay() { return format(this.effect())+"x" }, // Add formatting to the effect
@@ -52,10 +54,11 @@ addLayer("w", {
             title: 'blocks make more blocks?',
             description: 'multiply block gain by blocks',
             cost: new Decimal(4),
-            unlocked() {return player.w.points.gte(3)},
+            unlocked() {return hasUpgrade(this.layer, 12)},
             effect() {
                 if(player.points.lessThan(1)) return 1
                 let ret = player.points.log(9).times(1.67).pow(0.8)
+                if(ret.lt(1)) ret = 1
                 return ret;
             },
         },
@@ -67,8 +70,61 @@ addLayer("w", {
             effect() {
                 if(player.points.lessThan(1)) return 1
                 let ret = player.points.log(5).pow(0.2).times(1.4)
+                if(ret.lt(1)) ret = 1
                 return ret
             },
+        },
+        21:{
+            title: 'trees grow taller',
+            description: 'get even more wood per punch',
+            cost: new Decimal(16),
+            unlocked() {return hasUpgrade(this.layer, 14)},
+            effect() {
+                let ret = player.w.points.log(3).div(2).pow(0.7)
+                if (ret<1) ret = 1
+                return ret
+            },
+        },
+        22:{
+            title: 'new braincells help wood make more blocks',
+            description: 'wood further boosts blocks',
+            cost: new Decimal(32),
+            unlocked() {return hasUpgrade(this.layer, 21)},
+            effect(){
+                let ret = player.w.points.log(4).pow(0.56).add(3).times(1.234)
+                if (ret<1) ret = 1
+                return ret
+            },
+        },
+        23:{
+            title: 'ublocks wood chalenge',
+            cost: new Decimal(64),
+            unlocked() {return hasUpgrade(this.layer, 22)},
+            },
+        24:{
+            title: 'use your brain to be more efficiant at chalenges',
+            description: 'halfes wood chalenge requirement',
+            cost: new Decimal(128),
+            unlocked() {return hasUpgrade(this.layer, 23)},
+        },
+    },
+    challenges:{
+        rows: 1,
+        cols: 1,
+        11: {
+                name: "wood can be split into new materials", 
+                challengeDescription: "block gain is divided by 2",
+                unlocked() {return hasUpgrade(this.layer, 23)},
+                goal(){
+                        let comps = challengeCompletions("w", 11)
+                        let base = new Decimal(100)
+                        let goal = base.times(comps ** (comps / 3))
+                        if(goal.lt(new Decimal(100))) goal = new Decimal(100)
+                        if(hasUpgrade(this.layer, 24)) goal = goal.div(2)
+                        return goal
+                },
+                currencyDisplayName: "blocks",
+                completionLimit: 1,
         },
     },
 })
