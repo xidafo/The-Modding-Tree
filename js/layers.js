@@ -41,11 +41,11 @@ addLayer("w", {
         12: {
             title: 'wood somehow makes blocks?',
             description: "Multiply block gain baised on wood",
-            cost: new Decimal(1),
+            cost: new Decimal(2),
             unlocked() { return player[this.layer].unlocked }, // The upgrade is only visible when this is true
             effect() { // Calculate bonuses from the upgrade. Can return a single value or an object with multiple values
                 let ret = player[this.layer].points.add(1).pow(0.15).mul(1.25)
-                if(player[this.layer].points.lt(1)) ret = 1
+                if(player[this.layer].points.lt(1)) ret = new Decimal(1)
                 return ret;
             },
             effectDisplay() { return format(this.effect())+"x" }, // Add formatting to the effect
@@ -58,7 +58,7 @@ addLayer("w", {
             effect() {
                 if(player.points.lessThan(1)) return 1
                 let ret = player.points.log(9).times(1.67).pow(0.8)
-                if(ret.lt(1)) ret = 1
+                if(ret.lt(1)) ret = new Decimal(1)
                 return ret;
             },
         },
@@ -70,7 +70,7 @@ addLayer("w", {
             effect() {
                 if(player.points.lessThan(1)) return 1
                 let ret = player.points.log(5).pow(0.2).times(1.4)
-                if(ret.lt(1)) ret = 1
+                if(ret.lt(1)) ret = new Decimal(1)
                 return ret
             },
         },
@@ -81,7 +81,7 @@ addLayer("w", {
             unlocked() {return hasUpgrade(this.layer, 14)},
             effect() {
                 let ret = player.w.points.log(3).div(2).pow(0.7)
-                if (ret<1) ret = 1
+                if (ret.lt(1)) ret = new Decimal(1)
                 return ret
             },
         },
@@ -92,7 +92,7 @@ addLayer("w", {
             unlocked() {return hasUpgrade(this.layer, 21)},
             effect(){
                 let ret = player.w.points.log(4).pow(0.56).add(3).times(1.234)
-                if (ret<1) ret = 1
+                if (ret.lt(1)) ret = new Decimal(1)
                 return ret
             },
         },
@@ -112,8 +112,9 @@ addLayer("w", {
         rows: 1,
         cols: 1,
         11: {
-                name: "wood can be split into new materials", 
-                challengeDescription: "block gain is divided by 2",
+                name: "crafting planks", 
+                challengeDescription: "you descover if you punch wood hard enough you can split it into planks   effect: block gain is square rooted",
+                reward: 'unlocks the next layer',
                 unlocked() {return hasUpgrade(this.layer, 23)},
                 goal(){
                         let comps = challengeCompletions("w", 11)
